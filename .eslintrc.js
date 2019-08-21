@@ -21,5 +21,9 @@ module.exports = {
     camelcase: 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/camelcase': 'off',
+    'import/prefer-default-export': 'off',
+    'implicit-arrow-linebreak': 'off'
   },
 };
