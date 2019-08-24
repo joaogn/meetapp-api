@@ -49,12 +49,38 @@ class MeetupController {
     if (meetup) {
       // só pode cancelar meetup até 6h antes da data
       if (isBefore(subHours(meetup.date, 6), new Date())) {
-        return res.status(400).json({ error: 'can only cancel meetup 6 hours in advance' });
+        return res.status(400).json({ error: 'can only delete meetup 6 hours in advance' });
       }
     }
 
     await Meetup.destroy({ where: { id: meetupId } });
     return res.send();
+  }
+
+  async update(req: Request, res: Response) {
+    const { meetupId } = req.params;
+
+    const meetup = await Meetup.findByPk(meetupId);
+
+    if (!meetup) {
+      return res.status(400).json({ error: 'meetup not found' });
+    }
+    if (meetup) {
+      // só pode editar meetup até 2h antes da data
+      if (isBefore(subHours(meetup.date, 2), new Date())) {
+        return res.status(400).json({ error: 'can only update meetup 2 hours in advance' });
+      }
+    }
+
+    const updatedMeetup = await Meetup.update(req.body, {
+      where: { id: meetupId, user_id: req.userId },
+    });
+
+    if (!updatedMeetup) {
+      return res.status(400).json({ error: 'this meetup does not currently belong to this user' });
+    }
+
+    return res.json(meetup);
   }
 }
 
