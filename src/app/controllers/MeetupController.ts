@@ -33,6 +33,11 @@ class MeetupController {
     const meetup = await Meetup.create(req.body);
     return res.json(meetup);
   }
+
+  async index(req: Request, res: Response) {
+    const meetups = await Meetup.findAll({ where: { user_id: req.userId } });
+    res.json(meetups);
+  }
 }
 
 export default new MeetupController();
