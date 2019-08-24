@@ -38,6 +38,12 @@ class MeetupController {
     const meetups = await Meetup.findAll({ where: { user_id: req.userId } });
     res.json(meetups);
   }
+
+  async delete(req: Request, res: Response) {
+    const { meetupId } = req.params;
+    const meetup = await Meetup.destroy({ where: { id: meetupId } });
+    res.json(meetup);
+  }
 }
 
 export default new MeetupController();
