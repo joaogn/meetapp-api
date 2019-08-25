@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 
-interface UserType {
+export interface UserType {
   name?: string;
   email?: string;
   password?: string;

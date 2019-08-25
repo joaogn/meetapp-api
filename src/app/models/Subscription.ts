@@ -21,11 +21,11 @@ Subscription.init({
   sequelize, // this bit is important
 });
 
-Meetup.hasMany(Subscription, { foreignKey: 'meetup_id', as: 'meetup' });
-Subscription.belongsTo(Meetup, { foreignKey: 'meetup_id', as: 'meetup' });
+Meetup.hasMany(Subscription, { foreignKey: 'meetup_id', as: 'meetups' });
+Subscription.belongsTo(Meetup, { foreignKey: 'meetup_id', as: 'meetups' });
 
-User.hasMany(Subscription, { foreignKey: 'user_id', as: 'user' });
-Subscription.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasMany(Subscription, { foreignKey: 'user_id', as: 'users' });
+Subscription.belongsTo(User, { foreignKey: 'user_id', as: 'users' });
 
 
 export default Subscription;

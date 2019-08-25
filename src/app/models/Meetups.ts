@@ -18,6 +18,11 @@ class Meetup extends Model {
 
   public user_id!: number;
 
+  public user!: {
+    name?: string;
+    email?: string;
+  }
+
   public readonly created_at!: Date;
 
   public readonly updated_at!: Date;
@@ -36,7 +41,7 @@ Meetup.init({
 
 Meetup.belongsTo(File, { foreignKey: 'banner_id' });
 
-User.hasMany(Meetup, { foreignKey: 'user_id' });
-Meetup.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Meetup, { foreignKey: 'user_id', as: 'user' });
+Meetup.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 export default Meetup;

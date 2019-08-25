@@ -1,12 +1,25 @@
 import { Request, Response } from 'express';
 import { isBefore, format } from 'date-fns';
 import Meetup from '../models/Meetups';
+import User from '../models/User';
 import Subscription from '../models/Subscription';
+
+import SubscribeMail from '../jobs/SubscribeMail';
+
+import Queue from '../../lib/Queue';
 
 class SubscriptionController {
   async store(req:Request, res:Response) {
     const { meetupId } = req.params;
-    const meetup = await Meetup.findByPk(meetupId);
+    const meetup = await Meetup.findByPk(meetupId, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
 
     if (!meetup) {
       return res.status(400).json({ error: 'meetup not found' });
@@ -33,7 +46,7 @@ class SubscriptionController {
       include: [
         {
           model: Meetup,
-          as: 'meetup',
+          as: 'meetups',
           where: {
             date: format(meetup.date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
           },
@@ -47,6 +60,14 @@ class SubscriptionController {
 
 
     const subscription = await Subscription.create({ meetup_id: meetupId, user_id: req.userId });
+
+    const user = await User.findByPk(req.userId);
+
+    // adiciona o novo email a fila, passando a key e as variaveis do job
+    await Queue.add(SubscribeMail.key, {
+      meetup,
+      user,
+    });
 
     return res.json(subscription);
   }

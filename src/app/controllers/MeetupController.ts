@@ -3,13 +3,17 @@ import { Op } from 'sequelize';
 import { isBefore, parseISO, subHours } from 'date-fns';
 import Meetup from '../models/Meetups';
 
-interface MeetupType {
+export interface MeetupType {
   title?: string;
   description?: string;
   location?: string;
   date?: string;
   banner_id?: number;
   user_id?: number;
+  user?: {
+    name?: string;
+    email?: string;
+  }
 }
 
 
