@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { isBefore } from 'date-fns';
+import { isBefore, format } from 'date-fns';
 import Meetup from '../models/Meetups';
 import Subscription from '../models/Subscription';
 
@@ -27,6 +27,24 @@ class SubscriptionController {
     if (isSubscribed) {
       return res.status(400).json({ error: 'User is already subscribed to this meetup' });
     }
+
+    const checkDate = await Subscription.findOne({
+      where: { user_id: req.userId },
+      include: [
+        {
+          model: Meetup,
+          as: 'meetup',
+          where: {
+            date: format(meetup.date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+          },
+        },
+      ],
+    });
+
+    if (checkDate) {
+      return res.status(400).json({ error: 'Cannot subscribe to two meetups at the same time' });
+    }
+
 
     const subscription = await Subscription.create({ meetup_id: meetupId, user_id: req.userId });
 
