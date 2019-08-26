@@ -8,6 +8,7 @@ import SessionValidation from './app/middlewares/SessionValidation';
 import UserController from './app/controllers/UserController';
 import MeetupController from './app/controllers/MeetupController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import OpenMeetupsController from './app/controllers/OpenMeetupsController';
 import { UserStoreValidation, UpdateStoreValidation } from './app/middlewares/UserValidation';
 import { MeetupStoreValidation } from './app/middlewares/MeetupValidation';
 import AuthSession from './app/middlewares/auth';
@@ -28,4 +29,8 @@ routes.delete('/meetups/:meetupId', MeetupController.delete);
 routes.put('/meetups/:meetupId/update', MeetupController.update);
 
 routes.post('/subscriptions/:meetupId', SubscriptionController.store);
+routes.get('/subscriptions', SubscriptionController.index);
+
+routes.get('/openmeetups', OpenMeetupsController.index);
+
 export default routes;

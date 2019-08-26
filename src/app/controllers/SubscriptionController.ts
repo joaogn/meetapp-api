@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { isBefore, format } from 'date-fns';
+import { Op } from 'sequelize';
 import Meetup from '../models/Meetups';
 import User from '../models/User';
 import Subscription from '../models/Subscription';
@@ -70,6 +71,22 @@ class SubscriptionController {
     });
 
     return res.json(subscription);
+  }
+
+  async index(req:Request, res:Response) {
+    const subscription = await Subscription.findAll({
+      where: { user_id: req.userId },
+      include: [
+        {
+          model: Meetup,
+          as: 'meetups',
+          where: {
+            date: { [Op.gt]: new Date() },
+          },
+        },
+      ],
+    });
+    res.json(subscription);
   }
 }
 
