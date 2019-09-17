@@ -39,4 +39,10 @@ User.addHook('beforeCreate', async (user:any) => {
   }
 });
 
+User.addHook('beforeUpdate', async (user:any) => {
+  if (user.password) {
+    user.password_hash = await bcrypt.hash(user.password, 8);
+  }
+});
+
 export default User;
