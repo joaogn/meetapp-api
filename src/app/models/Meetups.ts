@@ -39,7 +39,7 @@ Meetup.init({
 });
 
 
-Meetup.belongsTo(File, { foreignKey: 'banner_id' });
+Meetup.belongsTo(File, { foreignKey: 'banner_id', as: 'file' });
 
 User.hasMany(Meetup, { foreignKey: 'user_id', as: 'user' });
 Meetup.belongsTo(User, { foreignKey: 'user_id', as: 'user' });

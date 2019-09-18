@@ -39,7 +39,10 @@ class MeetupController {
   }
 
   async index(req: Request, res: Response) {
-    const meetups = await Meetup.findAll({ where: { user_id: req.userId } });
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
+      attributes: ['id', 'title', 'date'],
+    });
     return res.json(meetups);
   }
 
