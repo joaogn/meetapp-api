@@ -34,7 +34,7 @@ class MeetupController {
     if (isBefore(parseISO(date), new Date())) {
       return res.status(400).json({ error: 'Cannot register date has passed' });
     }
-    const meetup = await Meetup.create(req.body);
+    const meetup = await Meetup.create({ ...req.body, user_id: req.userId });
     return res.json(meetup);
   }
 
@@ -42,6 +42,7 @@ class MeetupController {
     const meetups = await Meetup.findAll({
       where: { user_id: req.userId },
       attributes: ['id', 'title', 'date'],
+      order: [['date', 'DESC']],
     });
     return res.json(meetups);
   }

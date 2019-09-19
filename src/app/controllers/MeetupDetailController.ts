@@ -6,7 +6,7 @@ class MeetupDetailController {
   async index(req: Request, res: Response) {
     const { meetupId } = req.params;
     const meetup = await Meetup.findByPk(meetupId, {
-      attributes: ['title', 'description', 'location', 'date'],
+      attributes: ['title', 'description', 'location', 'date', 'banner_id'],
       include: [{
         model: File,
         as: 'file',

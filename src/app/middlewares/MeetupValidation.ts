@@ -21,8 +21,6 @@ export const MeetupStoreValidation = (req: Request, res: Response, next: NextFun
       ),
     banner_id: Yup.number()
       .required('Banner is Required'),
-    user_id: Yup.number()
-      .required('User is Required'),
   });
 
   schema.validate(req.body).then(() => {
