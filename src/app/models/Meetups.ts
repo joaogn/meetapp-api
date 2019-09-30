@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import { isBefore } from 'date-fns';
 import sequelize from '../../database';
 import File from './File';
 import User from './User';
@@ -23,6 +24,8 @@ class Meetup extends Model {
     email?: string;
   }
 
+  public past!: boolean;
+
   public readonly created_at!: Date;
 
   public readonly updated_at!: Date;
@@ -33,6 +36,12 @@ Meetup.init({
   description: Sequelize.STRING,
   location: Sequelize.STRING,
   date: Sequelize.DATE,
+  past: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      return isBefore(this.date, new Date());
+    },
+  },
 }, {
   tableName: 'meetups',
   sequelize, // this bit is important

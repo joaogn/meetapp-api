@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { isBefore, format } from 'date-fns';
-import { Op } from 'sequelize';
 import Meetup from '../models/Meetups';
 import User from '../models/User';
+import File from '../models/File';
 import Subscription from '../models/Subscription';
 
 import SubscribeMail from '../jobs/SubscribeMail';
@@ -80,13 +80,49 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetups',
-          where: {
-            date: { [Op.gt]: new Date() },
+          include: [{
+            model: User,
+            as: 'user',
+            attributes: ['name', 'email'],
           },
+          {
+            model: File,
+            as: 'file',
+            attributes: ['path', 'url'],
+          },
+          ],
+
         },
       ],
     });
     res.json(subscription);
+  }
+
+  async delete(req:Request, res:Response) {
+    const subscription = await Subscription.findOne({
+      include: [
+        {
+          model: Meetup,
+          as: 'meetups',
+          where: {
+            id: req.params.meetupId,
+          },
+        },
+      ],
+    });
+
+
+    if (!subscription) {
+      return res.status(400).json({ error: 'Meetup not found' });
+    }
+
+    if (subscription.meetups.past) {
+      return res.status(400).json({ error: 'You cannot cancel a past meetup' });
+    }
+
+    await Subscription.destroy({ where: { meetup_id: req.params.meetupId } });
+
+    return res.json();
   }
 }
 

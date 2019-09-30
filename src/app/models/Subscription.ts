@@ -10,6 +10,19 @@ class Subscription extends Model {
 
   public meetup_id!: number;
 
+  public meetups!: {
+    id: number;
+    title: string;
+    description: string;
+    location: string;
+    date: string;
+    created_at: string;
+    updated_at: string;
+    banner_id: number;
+    user_id: number;
+    past: boolean;
+  }
+
   public readonly created_at!: Date;
 
   public readonly updated_at!: Date;

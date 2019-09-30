@@ -3,6 +3,8 @@ import { startOfDay, parseISO, endOfDay } from 'date-fns';
 import { Op } from 'sequelize';
 import Meetup from '../models/Meetups';
 import User from '../models/User';
+import File from '../models/File';
+import Subscription from '../models/Subscription';
 
 class OpenMeetupsController {
   async index(req: Request, res: Response) {
@@ -23,9 +25,30 @@ class OpenMeetupsController {
         model: User,
         as: 'user',
         attributes: ['name', 'email'],
-      }],
+      },
+      {
+        model: File,
+        as: 'file',
+        attributes: ['path', 'url'],
+      },
+      ],
     });
-    res.json(meetups);
+
+    const subscriptions = await Subscription.findAll({
+      where: {
+        user_id: req.userId,
+      },
+    });
+
+    const freeMeetups = meetups.filter((meetup) => {
+      if (subscriptions.find((subscription) => subscription.meetup_id === meetup.id)) {
+        return null;
+      }
+      return meetup;
+    });
+
+
+    res.json(freeMeetups);
   }
 }
 
