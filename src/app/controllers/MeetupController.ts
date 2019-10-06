@@ -24,15 +24,15 @@ class MeetupController {
       where: {
         user_id: req.userId,
         date: {
-          [Op.between]: [subHours(parseISO(date), 6), parseISO(date)],
+          [Op.between]: [subHours(parseISO(date), 1), parseISO(date)],
         },
       },
     });
     if (validDate) {
-      return res.status(400).json({ error: 'You already have a registered meetup in the next 6 hours' });
+      return res.status(400).json({ error: 'You already have a registered meetup in the next hour' });
     }
     if (isBefore(parseISO(date), new Date())) {
-      return res.status(400).json({ error: 'Cannot register date has passed' });
+      return res.status(400).json({ error: "Can't register date has passed" });
     }
     const meetup = await Meetup.create({ ...req.body, user_id: req.userId });
     return res.json(meetup);
@@ -54,11 +54,8 @@ class MeetupController {
     if (!meetup) {
       return res.status(400).json({ error: 'meetup not found' });
     }
-    if (meetup) {
-      // só pode cancelar meetup até 6h antes da data
-      if (isBefore(subHours(meetup.date, 6), new Date())) {
-        return res.status(400).json({ error: 'can only delete meetup 6 hours in advance' });
-      }
+    if (meetup.past) {
+      return res.status(400).json({ error: "can't delete past meetups" });
     }
 
     await Meetup.destroy({ where: { id: meetupId } });
@@ -73,11 +70,13 @@ class MeetupController {
     if (!meetup) {
       return res.status(400).json({ error: 'meetup not found' });
     }
-    if (meetup) {
-      // só pode editar meetup até 2h antes da data
-      if (isBefore(subHours(meetup.date, 2), new Date())) {
-        return res.status(400).json({ error: 'can only update meetup 2 hours in advance' });
-      }
+
+    if (meetup.past) {
+      return res.status(400).json({ error: "can't update past meetups" });
+    }
+
+    if (isBefore(parseISO(req.body.date), new Date())) {
+      return res.status(400).json({ error: 'Cannot update date has passed' });
     }
 
     const updatedMeetup = await Meetup.update(req.body, {

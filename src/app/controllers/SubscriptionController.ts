@@ -94,6 +94,7 @@ class SubscriptionController {
 
         },
       ],
+      order: ['meetups.date'],
     });
     res.json(subscription);
   }

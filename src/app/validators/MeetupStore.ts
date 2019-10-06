@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { isValid, parseISO } from 'date-fns';
 import * as Yup from 'yup';
 
-export const MeetupStoreValidation = (req: Request, res: Response, next: NextFunction) => {
+export default (req: Request, res: Response, next: NextFunction) => {
   const schema = Yup.object().shape({
     title: Yup.string()
       .required('Title is Required'),
