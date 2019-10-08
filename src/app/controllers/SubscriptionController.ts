@@ -91,10 +91,9 @@ class SubscriptionController {
             attributes: ['path', 'url'],
           },
           ],
-
         },
       ],
-      order: ['meetups.date'],
+      order: [[{ model: Meetup, as: 'meetups' }, 'date', 'DESC']],
     });
     res.json(subscription);
   }
