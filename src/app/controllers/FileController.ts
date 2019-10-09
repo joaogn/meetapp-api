@@ -7,12 +7,16 @@ class FileController {
       return res.status(400).json({ error: 'image file not found' });
     }
     const { originalname: name, filename: path } = req.file;
-    const file = await File.create({
+    const {
+      id, name: savedName, path: savedPath, url,
+    } = await File.create({
       name,
       path,
     });
 
-    return res.json(file);
+    return res.json({
+      id, name: savedName, path: savedPath, url,
+    });
   }
 }
 

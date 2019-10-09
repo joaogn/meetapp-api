@@ -10,6 +10,7 @@ class OpenMeetupsService {
     const meetups = await Meetup.findAll({
       limit: 10,
       offset: (page - 1) * 10,
+      attributes: ['id', 'past', 'title', 'description', 'location', 'date', 'banner_id', 'user_id'],
       where: {
         user_id: { [Op.ne]: user_id },
         date: {

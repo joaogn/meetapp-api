@@ -8,6 +8,8 @@ class File extends Model {
 
   public path!: string;
 
+  public url!: string;
+
   public readonly created_at!: Date;
 
   public readonly updated_at!: Date;

@@ -60,7 +60,9 @@ class SubscriptionController {
     }
 
 
-    const subscription = await Subscription.create({ meetup_id: meetupId, user_id: req.userId });
+    const { id, meetup_id, user_id } = await Subscription.create({
+      meetup_id: meetupId, user_id: req.userId,
+    });
 
     const user = await User.findByPk(req.userId);
 
@@ -70,16 +72,18 @@ class SubscriptionController {
       user,
     });
 
-    return res.json(subscription);
+    return res.json({ id, meetup_id, user_id });
   }
 
   async index(req:Request, res:Response) {
     const subscription = await Subscription.findAll({
       where: { user_id: req.userId },
+      attributes: ['id', 'meetup_id', 'user_id'],
       include: [
         {
           model: Meetup,
           as: 'meetups',
+          attributes: ['title', 'description', 'location', 'date', 'banner_id', 'past'],
           include: [{
             model: User,
             as: 'user',

@@ -34,8 +34,12 @@ class MeetupController {
     if (isBefore(parseISO(date), new Date())) {
       return res.status(400).json({ error: "Can't register date has passed" });
     }
-    const meetup = await Meetup.create({ ...req.body, user_id: req.userId });
-    return res.json(meetup);
+    const {
+      id, past, title, description, location, date: savedDate, banner_id, user_id,
+    } = await Meetup.create({ ...req.body, user_id: req.userId });
+    return res.json({
+      id, past, title, description, location, date: savedDate, banner_id, user_id,
+    });
   }
 
   async index(req: Request, res: Response) {
@@ -87,7 +91,10 @@ class MeetupController {
       return res.status(400).json({ error: 'this meetup does not currently belong to this user' });
     }
 
-    return res.json(meetup);
+    const savedMeetup = await Meetup.findByPk(meetupId, {
+      attributes: ['id', 'past', 'title', 'description', 'location', 'date', 'banner_id', 'user_id'],
+    });
+    return res.json(savedMeetup);
   }
 }
 
