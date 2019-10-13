@@ -1,83 +1,17 @@
 import { Request, Response } from 'express';
-import {
-  isBefore, format, startOfHour, endOfHour,
-} from 'date-fns';
-import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
 import File from '../models/File';
 import Subscription from '../models/Subscription';
-
-import SubscribeMail from '../jobs/SubscribeMail';
-
-import Queue from '../../lib/Queue';
+import CreateSubscriptionService from '../services/CreateSubscriptionService';
 
 class SubscriptionController {
   async store(req:Request, res:Response) {
     const { meetupId } = req.params;
-    const meetup = await Meetup.findByPk(meetupId, {
-      include: [
-        {
-          model: User,
-          as: 'user',
-          attributes: ['name', 'email'],
-        },
-      ],
-    });
-    if (!meetup) {
-      return res.status(400).json({ error: 'meetup not found' });
-    }
 
-    if (meetup.user_id === req.userId) {
-      return res.status(400).json({ error: 'Cannot sign up for own meetup' });
-    }
+    const result = await CreateSubscriptionService.run({ meetupId, userId: req.userId });
 
-    if (isBefore(meetup.date, new Date())) {
-      return res.status(400).json({ error: 'this metup has passed' });
-    }
-
-    const isSubscribed = await Subscription.findOne({
-      where: { meetup_id: meetupId, user_id: req.userId },
-    });
-
-    if (isSubscribed) {
-      return res.status(400).json({ error: 'User is already subscribed to this meetup' });
-    }
-
-    const checkDate = await Subscription.findOne({
-      where: { user_id: req.userId },
-      include: [
-        {
-          model: Meetup,
-          as: 'meetups',
-          where: {
-            date: {
-              [Op.between]: [format(startOfHour(meetup.date), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
-                format(endOfHour(meetup.date), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")],
-            },
-          },
-        },
-      ],
-    });
-
-    if (checkDate) {
-      return res.status(400).json({ error: 'Cannot subscribe to two meetups at the same time' });
-    }
-
-
-    const { id, meetup_id, user_id } = await Subscription.create({
-      meetup_id: meetupId, user_id: req.userId,
-    });
-
-    const user = await User.findByPk(req.userId);
-
-    // adiciona o novo email a fila, passando a key e as variaveis do job
-    await Queue.add(SubscribeMail.key, {
-      meetup,
-      user,
-    });
-
-    return res.json({ id, meetup_id, user_id });
+    return res.status(result.status).json(result.response);
   }
 
   async index(req:Request, res:Response) {

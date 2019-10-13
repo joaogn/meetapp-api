@@ -14,5 +14,6 @@ module.exports = {
     '!src/server.ts',
     '!src/__tests__/**/*',
     '!src/database/migrations/**',
+    '!src/database/seeds/**',
   ],
 };

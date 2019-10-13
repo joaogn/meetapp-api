@@ -46,7 +46,7 @@ class OpenMeetupsService {
       return meetup;
     });
 
-    return openMeetups;
+    return { status: 200, response: openMeetups };
   }
 }
 
