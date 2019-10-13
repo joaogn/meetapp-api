@@ -1,6 +1,6 @@
 import { Model } from 'sequelize';
 import sequelize from '../../database';
-import Meetup from './Meetups';
+import Meetup from './Meetup';
 import User from './User';
 
 class Subscription extends Model {

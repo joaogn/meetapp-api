@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
-import { isBefore, format } from 'date-fns';
-import Meetup from '../models/Meetups';
+import {
+  isBefore, format, startOfHour, endOfHour,
+} from 'date-fns';
+import { Op } from 'sequelize';
+import Meetup from '../models/Meetup';
 import User from '../models/User';
 import File from '../models/File';
 import Subscription from '../models/Subscription';
@@ -21,7 +24,6 @@ class SubscriptionController {
         },
       ],
     });
-
     if (!meetup) {
       return res.status(400).json({ error: 'meetup not found' });
     }
@@ -49,7 +51,10 @@ class SubscriptionController {
           model: Meetup,
           as: 'meetups',
           where: {
-            date: format(meetup.date, "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+            date: {
+              [Op.between]: [format(startOfHour(meetup.date), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"),
+                format(endOfHour(meetup.date), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")],
+            },
           },
         },
       ],

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { isBefore, parseISO, subHours } from 'date-fns';
-import Meetup from '../models/Meetups';
+import Meetup from '../models/Meetup';
 
 export interface MeetupType {
   title?: string;
@@ -79,17 +79,14 @@ class MeetupController {
       return res.status(400).json({ error: "can't update past meetups" });
     }
 
-    if (isBefore(parseISO(req.body.date), new Date())) {
-      return res.status(400).json({ error: 'Cannot update date has passed' });
-    }
 
-    const updatedMeetup = await Meetup.update(req.body, {
-      where: { id: meetupId, user_id: req.userId },
-    });
-
-    if (!updatedMeetup) {
+    if (meetup.user_id !== req.userId) {
       return res.status(400).json({ error: 'this meetup does not currently belong to this user' });
     }
+
+    await Meetup.update(req.body, {
+      where: { id: meetupId, user_id: req.userId },
+    });
 
     const savedMeetup = await Meetup.findByPk(meetupId, {
       attributes: ['id', 'past', 'title', 'description', 'location', 'date', 'banner_id', 'user_id'],

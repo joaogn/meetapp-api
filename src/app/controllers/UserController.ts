@@ -28,7 +28,7 @@ class UserController {
     if (user.email !== email) {
       const userExist = await User.findOne({ where: { email } });
       if (userExist) {
-        return res.status(400).json({ error: 'User already exists.' });
+        return res.status(400).json({ error: 'Email already exists.' });
       }
     }
     if (oldPassword && !(await user.checkPassword(oldPassword))) {

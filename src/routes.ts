@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import Brute from 'express-brute';
-import BruteRedis from 'express-brute-redis';
+// import Brute from 'express-brute';
+// import BruteRedis from 'express-brute-redis';
 
 import multer from 'multer';
 import multerConfig from './config/multer';
@@ -22,14 +22,15 @@ import AuthSession from './app/middlewares/auth';
 
 const routes = Router();
 const upload = multer(multerConfig);
-
+/*
 const bruteStore = new BruteRedis({
   host: process.env.REDIS_HOST,
   port: Number(process.env.REDIS_PORT),
 });
 const bruteForce = new Brute(bruteStore);
+*/
 
-routes.post('/sessions', bruteForce.prevent, SessionValidation, SessionController.store);
+routes.post('/sessions', SessionValidation, SessionController.store);
 routes.post('/users', validateUserStore, UserController.store);
 routes.use(AuthSession);
 routes.put('/users', validateUserUpdate, UserController.update);

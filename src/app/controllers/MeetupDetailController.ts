@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Meetup from '../models/Meetups';
+import Meetup from '../models/Meetup';
 import File from '../models/File';
 
 class MeetupDetailController {
