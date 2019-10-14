@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import 'express-async-errors';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
@@ -11,6 +10,11 @@ import RateLimit from 'express-rate-limit';
 import RateLimitRedis from 'rate-limit-redis';
 import routes from './routes';
 import sentryConfig from './config/sentry';
+
+require("dotenv").config({
+  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"
+});
+
 
 class App {
   server: express.Express;
@@ -31,7 +35,7 @@ class App {
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')),
     );
-    if (process.env.NODE_ENV !== 'development') {
+ /*   if (process.env.NODE_ENV !== 'development' && process.env.NODE_ENV !== 'test' ) {
       this.server.use(
         new RateLimit({
           store: new RateLimitRedis({
@@ -44,7 +48,7 @@ class App {
           max: 100,
         }),
       );
-    }
+    } */
   }
 
   routes():void {

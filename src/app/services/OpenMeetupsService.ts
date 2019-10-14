@@ -1,6 +1,6 @@
 import { startOfDay, parseISO, endOfDay } from 'date-fns';
 import { Op } from 'sequelize';
-import Meetup from '../models/Meetups';
+import Meetup from '../models/Meetup';
 import User from '../models/User';
 import File from '../models/File';
 import Subscription from '../models/Subscription';
@@ -46,7 +46,7 @@ class OpenMeetupsService {
       return meetup;
     });
 
-    return openMeetups;
+    return { status: 200, response: openMeetups };
   }
 }
 

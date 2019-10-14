@@ -3,8 +3,9 @@ module.exports = {
   env: {
     es6: true,
     node: true,
+    jest: true,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jest'],
   extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'airbnb-base'],
   globals: {
     Atomics: 'readonly',
@@ -23,7 +24,8 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     'import/prefer-default-export': 'off',
-    'implicit-arrow-linebreak': 'off'
+    'implicit-arrow-linebreak': 'off',
   },
 };
