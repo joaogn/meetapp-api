@@ -262,6 +262,22 @@ describe('PUT /meetups', () => {
     expect(response.body).toEqual({ error: 'this meetup does not currently belong to this user' });
   });
 
+  it(`should return { error:${"can't update date has passed"}  }`, async () => {
+    const {
+      id, title, location,
+    } = await factory.create<MeetupType>('Meetup', {
+      user_id: user.id,
+      banner_id: banner.id,
+    });
+    const response = await request(app)
+      .put(`/meetups/${id}/update`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send({ title, location, date: faker.date.past() });
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({ error: "can't update date has passed" });
+  });
+
   it("should return { error: 'Invalid date format.'  }", async () => {
     const { id, title, location } = await factory.create<MeetupType>('Meetup', {
       date: faker.date.past(),

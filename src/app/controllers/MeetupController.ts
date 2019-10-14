@@ -84,6 +84,10 @@ class MeetupController {
       return res.status(400).json({ error: 'this meetup does not currently belong to this user' });
     }
 
+    if (isBefore(parseISO(req.body.date), new Date())) {
+      return res.status(400).json({ error: "can't update date has passed" });
+    }
+
     await Meetup.update(req.body, {
       where: { id: meetupId, user_id: req.userId },
     });

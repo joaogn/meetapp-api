@@ -1,6 +1,11 @@
 module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
+  coverageReporters: [
+    'json-summary',
+    'text',
+    'lcov',
+  ],
   bail: true,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {

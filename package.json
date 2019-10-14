@@ -8,8 +8,9 @@
     "dev": "nodemon src/server.ts",
     "queue": "nodemon src/queue.ts",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test jest --runInBand --forceExit",
-    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
+    "test": "NODE_ENV=test jest --runInBand --forceExit && make-coverage-badge --output-path \"./badges/coverage-badge.svg\"",
+    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all",
+    "build": "gulp"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
@@ -39,6 +40,7 @@
     "@types/yup": "^0.26.23",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "babel-plugin-root-import": "^6.4.1",
     "eslint": "^6.2.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.1.0",
@@ -47,7 +49,12 @@
     "eslint-plugin-prettier": "^3.1.0",
     "factory-girl": "^5.0.4",
     "faker": "^4.1.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-typescript": "^5.0.1",
     "jest": "^24.9.0",
+    "jest-coverage-badges": "^1.1.2",
+    "make-coverage-badge": "^1.1.1",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
     "redis-mock": "^0.46.0",

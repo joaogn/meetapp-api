@@ -1,4 +1,8 @@
 node_modules
+coverage
+database.sql
+yarn-error.log
+dist
 .env
 tmp/uploads/*
 !tmp/uploads/0bc32c66-c138-40e0-bf0b-ea4775c982cf.jpg
