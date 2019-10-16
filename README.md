@@ -318,7 +318,7 @@ http://localhost:3333/meetups/:meetupId **GET**
 
 ### Listar Meetups Disponiveis
 
-http://localhost:3333/openmeetups **GET**
+http://localhost:3333/openmeetups?date=2019-10-16&page=1 **GET**
 
 **Dados Retornados**
 
@@ -394,6 +394,7 @@ http://localhost:3333/subscriptions **GET**
     "user_id": 4,
     "meetups": {
       "past": true,
+      "id": 4,
       "title": "Exemplo 34",
       "description": "Evento exemplo 34",
       "location": "Em casa",

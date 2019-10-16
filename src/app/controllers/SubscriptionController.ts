@@ -22,7 +22,7 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetups',
-          attributes: ['title', 'description', 'location', 'date', 'banner_id', 'past'],
+          attributes: ['id', 'title', 'description', 'location', 'date', 'banner_id', 'past'],
           include: [{
             model: User,
             as: 'user',

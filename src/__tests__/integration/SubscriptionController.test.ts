@@ -46,7 +46,7 @@ describe('POST /subscriptions/:meetupId', () => {
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json');
     expect(response.status).toBe(200);
-    expect(Mailer.prototype.sendMail).toHaveBeenCalledTimes(1);
+    expect(Mailer.prototype.sendMail).toHaveBeenCalled();
   });
 
   it('Should create new Subscription', async () => {
@@ -249,7 +249,7 @@ describe('GET /subscriptions', () => {
     expect(Object.keys(response.body[0]).sort()).toEqual(['id', 'meetup_id', 'user_id', 'meetups'].sort());
     expect(Object.keys(response.body[0].meetups).sort()).toEqual(
       [
-        'past', 'title', 'description', 'location', 'date', 'banner_id', 'user', 'file',
+        'past', 'id', 'title', 'description', 'location', 'date', 'banner_id', 'user', 'file',
       ].sort(),
     );
     expect(Object.keys(response.body[0].meetups.user).sort()).toEqual(['name', 'email'].sort());
