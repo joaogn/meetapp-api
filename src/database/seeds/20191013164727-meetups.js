@@ -1,114 +1,107 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const faker = require('faker');
-const addDays = require('date-fns/addDays');
-const addHours = require('date-fns/addHours');
-const subHours = require('date-fns/subHours');
-
+const faker = require("faker");
+const addDays = require("date-fns/addDays");
+const addHours = require("date-fns/addHours");
+const subHours = require("date-fns/subHours");
 
 module.exports = {
-  up: (queryInterface) => queryInterface.bulkInsert('meetups',
-    [
-      {
-        id: 1,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addDays(new Date(), 1),
-        banner_id: 1,
-        user_id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 2,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addHours(new Date(), 3),
-        banner_id: 2,
-        user_id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 3,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: subHours(new Date(), 1),
-        banner_id: 3,
-        user_id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 4,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addDays(new Date(), 1),
-        banner_id: 3,
-        user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 5,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addHours(new Date(), 3),
-        banner_id: 2,
-        user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 6,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: subHours(new Date(), 1),
-        banner_id: 1,
-        user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
+  up: queryInterface =>
+    queryInterface.bulkInsert(
+      "meetups",
+      [
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addDays(new Date(), 1),
+          banner_id: 1,
+          user_id: 1,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addHours(new Date(), 3),
+          banner_id: 2,
+          user_id: 1,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: subHours(new Date(), 1),
+          banner_id: 3,
+          user_id: 1,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addDays(new Date(), 1),
+          banner_id: 3,
+          user_id: 2,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addHours(new Date(), 3),
+          banner_id: 2,
+          user_id: 2,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: subHours(new Date(), 1),
+          banner_id: 1,
+          user_id: 2,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addDays(new Date(), 1),
+          banner_id: 2,
+          user_id: 3,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: addHours(new Date(), 3),
+          banner_id: 1,
+          user_id: 3,
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          title: faker.lorem.words(),
+          description: faker.lorem.paragraph(),
+          location: faker.address.streetAddress(),
+          date: subHours(new Date(), 1),
+          banner_id: 3,
+          user_id: 3,
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      ],
+      {}
+    ),
 
-      },
-      {
-        id: 7,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addDays(new Date(), 1),
-        banner_id: 2,
-        user_id: 3,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 8,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: addHours(new Date(), 3),
-        banner_id: 1,
-        user_id: 3,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 9,
-        title: faker.lorem.words(),
-        description: faker.lorem.paragraph(),
-        location: faker.address.streetAddress(),
-        date: subHours(new Date(), 1),
-        banner_id: 3,
-        user_id: 3,
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ], {}),
-
-  down: (queryInterface) => queryInterface.bulkDelete('meetups', null, {}),
+  down: queryInterface => queryInterface.bulkDelete("meetups", null, {})
 };
